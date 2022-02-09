@@ -1,24 +1,14 @@
+var randomNumber = function(min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1) + min);
+  
+    return value;
+  };
 var playerName = window.prompt("What is your robot's name?");
 var playerHealth = 100;
 var playerAttack = 10;
 var playerMoney = 10;
-
-// You can also log multiple values at once like this
-// console.log(playerName, playerAttach, playerHealth);
-
 var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
-// console.log(enemyNames[0]);
-// console.log(enemyNames[1]);
-// console.log(enemyNames[2]);
-// console.log(enemyNames[3]);
-// console.log(enemyNames.length);
-// for (var i=0;i<enemyNames.length; i++)
-// {
-//     console.log(enemyNames[i]);
-//     console.log(i);
-//     console.log(enemyNames[i]+" is at " +i +" index");
-// }
-var enemyHealth = 50;
+var enemyHealth = randomNumber(40,60);
 var enemyAttack = 12;
 
 
@@ -34,7 +24,7 @@ var fight = function (enemyName) {
             if (confirmSkip) {
 
                 window.alert(playerName + " has decided to skip this fight. Goodbye!");
-                playerMoney = playerMoney - 10;
+                playerMoney = Math.max(0, playerMoney -10);
                 console.log("playerMoney", playerMoney);
                 break;
             }
@@ -45,18 +35,20 @@ var fight = function (enemyName) {
         }
 
         if (promptFight === "fight" || promptFight === "FIGHT") {
-            enemyHealth = enemyHealth - playerAttack;
+            var damage=randomNumber(playerAttack-3, playerAttack);
+            enemyHealth = Math.max(0, enemyHealth - damage);
             console.log(
                 playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining."
             );
             if (enemyHealth <= 0) {
                 window.alert(enemyName + " has died!");
-                playerMoney = playerMoney + 20;
+                playerMoney = playerMoney = playerMoney + 20;;
                 break;
             } else {
                 window.alert(enemyName + " still has " + enemyHealth + " health left.");
             }
-            playerHealth = playerHealth - enemyAttack;
+            var damage = randomNumber(enemyAttack -3, enemyAttack);
+            playerHealth = Math.max(0, playerHealth-damage);
             console.log(
                 enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining."
             );
@@ -96,7 +88,7 @@ var startGame = function () {
         if (playerHealth > 0) {
             window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
             var pickedEnemyName = enemyNames[i];
-            enemyHealth = 50;
+            enemyHealth = randomNumber();
             fight(pickedEnemyName);
             if (playerHealth > 0 && i < enemyNames.length - 1) {
                 var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
@@ -179,3 +171,4 @@ var shop = function () {
     }
 };
 startGame();
+
