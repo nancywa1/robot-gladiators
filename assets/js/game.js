@@ -17,7 +17,7 @@ var getPlayerName =function() {
 };
 var playerInfo = {
     name: getPlayerName(),
-    name: window.prompt("What is your robot's name?"),
+    // name: window.prompt("What is your robot's name?"),
     health: 100,
     attack: 10,
     money: 10,
@@ -26,7 +26,7 @@ var playerInfo = {
         this.money =10;
         this.attack = 10;
     },
-    refillhealth: function() {
+    refillhHealth: function() {
         if (this.money>=7) {
             window.alert("Refilling player's health by 20 for 7 dollars");
             this.health +=20;
@@ -67,12 +67,33 @@ var enemyInfo =[
         attack: randomNumber(10,14)
     }
 ];
+var fightOrSkip =function() {
+    var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+    promptFight=promptFight.toLowerCase();
+    if (promptFight ==="" || promptFight ===null) {
+        window.alert("You need to provide a valid answer! Please try again.")
+        return fightOrSkip();
+    }
+    if (promptFight==="skip" || promptFight==="SKIP") {
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+        if (confirmSkip) {
+            window.alert(playerInfo.name+" has decided to skip this fight. Goodbye!");
+            playerInfo.playerMoney=playerInfo.money-10;
+            shop();
+        }
+    }
+    return false;
+}
 var fight = function (enemy) {
     // console.log(enemy);
     while (playerInfo.health > 0 && enemy.health > 0) {
         // Alert players that they are starting the round
         // window.alert("Welcome to Robot Gladiators!");
         var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+        if (fightOrSkip()) {
+            break;
+        }
+        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
         console.log(promptFight)
         if (promptFight === "skip" || promptFight === "SKIP") {
             // window.alert (playerName + " has chose to skip the fight!");
@@ -81,8 +102,8 @@ var fight = function (enemy) {
 
                 window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
                 playerInfo.money = Math.max(0, playerInfo.money -10);
-                console.log("playerMoney", playerInfo.money);
-                break;
+                // console.log("playerMoney", playerInfo.money);
+                return;
             }
             // else {
             //     fight();
@@ -121,6 +142,10 @@ var fight = function (enemy) {
             window.alert("You need to choose a valid option. Try again!");
         }
 
+    }
+    if (!promptFight) {
+        window.alert ("You need to provide a valid answer! Please try again.");
+        return fightOrSkip();
     }
 
 };
